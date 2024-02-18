@@ -32,7 +32,7 @@ struct HomeView: View {
         .navigationBarTitleDisplayMode(.inline)
         .onAppear() {
 //            mangaVM.searchManga()
-//            mangaVM.fetchStaffPicks()
+            mangaVM.fetchStaffPicks()
         }
     }
     
@@ -84,8 +84,8 @@ struct StaffPicks: View {
             Text("Staff Picks")
             ScrollView(.horizontal) {
                 HStack(spacing: 20) {
-                    ForEach(mangaVM.staffPicks?.data?.relationships ?? []) { manga in
-                        
+                    ForEach(mangaVM.manyMangas?.data ?? []) { manga in
+                        MangaPresentView(manga: manga)
                     }
                     .padding(.trailing, 10)
                 }

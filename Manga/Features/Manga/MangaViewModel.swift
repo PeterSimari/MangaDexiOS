@@ -12,6 +12,7 @@ final class MangaViewModel: ObservableObject {
     
     @Published var manga: MangaResponse?
     @Published var mangas: MangasResponse?
+    @Published var manyMangas: MangasResponse?
     @Published var staffPicks: ListResponse?
     @Published var mangaCover: MangaCoverResponse?
     
@@ -34,6 +35,36 @@ final class MangaViewModel: ObservableObject {
                             if let data = data,
                                let manga = try? decoder.decode(MangaResponse.self, from: data) {
                                 self?.manga = manga
+                            } else {
+                                self?.hasError = true
+                                self?.error = UserError.failedToDecode
+                            }
+                        }
+                    }
+                }.resume()
+        }
+    }
+    
+    func fetchManyManga(_ ids: [String]) {
+        var idURL: String = "?"
+        for id in ids {
+            idURL.append("ids[]\(id)&")
+        }
+        let mangaURL: String = "https://api.mangadex.org/manga/\(idURL)"
+        if let url: URL = URL(string: mangaURL) {
+            URLSession
+                .shared
+                .dataTask(with: url) { [weak self] data, response, error in
+                    DispatchQueue.main.async {
+                        if let error = error {
+                            self?.hasError = true
+                            self?.error = UserError.custom(error: error)
+                        } else {
+                            let decoder: JSONDecoder = JSONDecoder()
+                            
+                            if let data = data,
+                               let manga = try? decoder.decode(MangasResponse.self, from: data) {
+                                self?.manyMangas = manga
                             } else {
                                 self?.hasError = true
                                 self?.error = UserError.failedToDecode
@@ -113,7 +144,7 @@ final class MangaViewModel: ObservableObject {
     }
     
     func fetchStaffPicks() {
-        let url: String = "https://api.mangadex.org/list/805ba886-dd99-4aa4-b460-4bd7c7b71352?includes[]=user"
+        let url: String = "https://api.mangadex.dev/list/805ba886-dd99-4aa4-b460-4bd7c7b71352?includes[]=user"
         if let url: URL = URL(string: url) {
             URLSession
                 .shared
@@ -128,6 +159,7 @@ final class MangaViewModel: ObservableObject {
                             if let data = data,
                                let manga = try? decoder.decode(ListResponse.self, from: data) {
                                 self?.staffPicks = manga
+                                self?.listToMangaArray(relationships: manga.data?.relationships ?? [])
                                 // convert the array of relationships who's type is Manga to [Manga] in a new function
                                 // iterate through that list when calling this.
                             } else {
@@ -145,7 +177,7 @@ final class MangaViewModel: ObservableObject {
 extension MangaViewModel {
     // This will be used to convert data into something that we can read
     
-    func listToMangaArray(relationships: [MangaListRelationship]) -> [Manga] {
+    func listToMangaArray(relationships: [MangaListRelationship]) {
         var mangaIDs: [String] = []
         for relationship in relationships {
             if relationship.type == "manga" {
@@ -153,6 +185,7 @@ extension MangaViewModel {
             }
         }
         // Call the fetchManga which takes in multiple manga IDs (need new model for this)
+        fetchManyManga(mangaIDs)
     }
 }
 
