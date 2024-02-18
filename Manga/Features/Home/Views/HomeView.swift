@@ -10,6 +10,7 @@ import SwiftUI
 
 struct HomeView: View {
     @StateObject private var mangaVM = MangaViewModel()
+    @State private var displaySearch: Bool = false
     
     var body: some View {
         ScrollView {
@@ -30,12 +31,41 @@ struct HomeView: View {
         }
         .navigationTitle("Home")
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            HStack {
+                Button {
+                    displaySearch.toggle()
+                } label: {
+                    Text("Search")
+                    Image(systemName: "magnifyingglass")
+                }
+            }
+        }
         .onAppear() {
 //            mangaVM.searchManga()
             mangaVM.fetchStaffPicks()
         }
+        .sheet(isPresented: $displaySearch, content: {
+            SearchView()
+        })
+        
     }
     
+}
+
+struct SearchView: View {
+    @State private var basicSearch: String = ""
+    var body: some View {
+        VStack {
+            TextField("Search for Manga", text: $basicSearch)
+                .textFieldStyle(.roundedBorder)
+            Spacer()
+        }
+        .padding(20)
+        .onChange(of: basicSearch, {
+            
+        })
+    }
 }
 
 struct PopularNewTitles: View {
