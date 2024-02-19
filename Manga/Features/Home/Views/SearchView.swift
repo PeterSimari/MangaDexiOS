@@ -29,6 +29,7 @@ struct SearchView: View {
             }
         }
         .padding(20)
+        .background(.gray)
     }
 }
 
