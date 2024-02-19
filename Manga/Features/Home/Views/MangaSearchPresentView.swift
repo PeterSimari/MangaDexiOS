@@ -48,6 +48,7 @@ Guts, known as the Black Swordsman, seeks sanctuary from the demonic forces attr
                 .font(.caption)
                 infoStack
                 tagStack
+                Spacer()
             }
             Spacer()
         }
@@ -64,7 +65,7 @@ Guts, known as the Black Swordsman, seeks sanctuary from the demonic forces attr
     var coverThumbnail: some View {
         Image("berserk")
             .resizable()
-            .frame(maxWidth: 200, maxHeight: 300)
+            .frame(maxWidth: 150, maxHeight: 200)
             .padding(.trailing, 10)
     }
     
@@ -82,9 +83,9 @@ Guts, known as the Black Swordsman, seeks sanctuary from the demonic forces attr
     
     var infoStack: some View {
         HStack {
-            Text("seinen")
-            Text("ongoing")
-            Text("erotica")
+            StatusView(status: "ongoing")
+            DemographicView(demographic: "seinen")
+            RatingView(rating: "erotica")
             Spacer()
         }
     }
