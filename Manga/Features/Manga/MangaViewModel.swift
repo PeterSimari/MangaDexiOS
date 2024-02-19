@@ -75,8 +75,8 @@ final class MangaViewModel: ObservableObject {
         }
     }
     
-    func searchManga() {
-        let mangaURL: String = "https://api.mangadex.dev/manga?limit=20&title=berserk&includedTagsMode=AND&excludedTagsMode=OR&contentRating%5B%5D=safe&contentRating%5B%5D=suggestive&contentRating%5B%5D=erotica&order%5BlatestUploadedChapter%5D=desc"
+    func searchManga(title: String) {
+        let mangaURL: String = "https://api.mangadex.dev/manga?limit=10&title=\(title)"
         guard let url: URL = URL(string: mangaURL) else {
             fatalError("Invalid URL")
         }

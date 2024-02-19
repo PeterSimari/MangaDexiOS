@@ -42,8 +42,7 @@ struct HomeView: View {
             }
         }
         .onAppear() {
-//            mangaVM.searchManga()
-            mangaVM.fetchStaffPicks()
+//            mangaVM.fetchStaffPicks()
         }
         .sheet(isPresented: $displaySearch, content: {
             SearchView()
@@ -51,21 +50,6 @@ struct HomeView: View {
         
     }
     
-}
-
-struct SearchView: View {
-    @State private var basicSearch: String = ""
-    var body: some View {
-        VStack {
-            TextField("Search for Manga", text: $basicSearch)
-                .textFieldStyle(.roundedBorder)
-            Spacer()
-        }
-        .padding(20)
-        .onChange(of: basicSearch, {
-            
-        })
-    }
 }
 
 struct PopularNewTitles: View {
@@ -125,6 +109,6 @@ struct StaffPicks: View {
     }
 }
 
-#Preview {
-    HomeView()
-}
+//#Preview {
+//    HomeView()
+//}
