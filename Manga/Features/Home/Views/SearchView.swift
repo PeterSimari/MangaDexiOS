@@ -20,12 +20,12 @@ struct SearchView: View {
             Spacer()
             ScrollView(showsIndicators: false) {
                 Spacer().frame(height: 5)
-                ForEach(1...10, id: \.self) {_ in
-                    MangaSearchPresentView()
-                }
-//                ForEach(mangaVM.mangas?.data ?? []) { manga in
-//                    MangaSearchPresentView(manga: manga)
+//                ForEach(1...10, id: \.self) {_ in
+//                    MangaSearchPresentView()
 //                }
+                ForEach(mangaVM.mangas?.data ?? []) { manga in
+                    MangaSearchPresentView(manga: manga)
+                }
             }
         }
         .padding(20)

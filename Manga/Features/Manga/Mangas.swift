@@ -93,9 +93,11 @@ struct MangaTag: Identifiable, Codable {
 }
 
 struct TagAttributes: Codable {
-    let additionalProp1: String?
-    let additionalProp2: String?
-    let additionalProp3: String?
+    let name: TagName?
+}
+
+struct TagName: Codable {
+    let en: String?
 }
 
 struct TagDescription: Codable {

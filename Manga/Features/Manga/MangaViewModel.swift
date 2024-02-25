@@ -190,6 +190,24 @@ extension MangaViewModel {
 }
 
 extension MangaViewModel {
+    // This will be used to turn data into something we want to display to the user
+    
+    func getTags(manga: Manga) -> [String] {
+        var tagArray: [String] = []
+        for tag in manga.attributes?.tags ?? [] {
+            tagArray.append(tag.attributes?.name?.en ?? "")
+        }
+        return tagArray
+    }
+    
+    func getSplitDescription(manga: Manga) -> String {
+        let description: String = manga.attributes?.description?.en ?? ""
+        let descriptionSplit = description.components(separatedBy: "\n")
+        return descriptionSplit[0]
+    }
+}
+
+extension MangaViewModel {
     enum UserError: LocalizedError {
         case custom(error: Error)
         case failedToDecode

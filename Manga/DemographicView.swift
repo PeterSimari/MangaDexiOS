@@ -62,7 +62,7 @@ enum Demographic: String {
     func getDemographicName() -> String {
         switch self {
         case .nonNil:
-            return "error reading demographic"
+            return "not listed"
         case .seinen:
             return "Seinen"
         case .shounen:

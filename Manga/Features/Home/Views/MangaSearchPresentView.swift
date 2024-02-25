@@ -10,42 +10,23 @@ import SwiftUI
 
 struct MangaSearchPresentView: View {
     @StateObject private var mangaVM = MangaViewModel()
-//    var manga: Manga
+    var manga: Manga
+    var originalLanguage: OriginalLanguage
+    var tags: [String]
     
-//    init(mangaVM: MangaViewModel = MangaViewModel(), manga: Manga = manga) {
-//        self.manga = manga
-//        self.tags = getTags() // write this in ViewModel or something. definitely not here
-//    }
+    init(mangaVM: MangaViewModel = MangaViewModel(), manga: Manga) {
+        self.manga = manga
+        self.tags = mangaVM.getTags(manga: manga)
+        self.originalLanguage = OriginalLanguage(rawValue: manga.attributes?.originalLanguage ?? "") ?? .none
+    }
     
     var body: some View {
-        //        HStack {
-        //            AsyncImage(
-        //                url: URL(string: mangaVM.fetchMangaCover(manga)),
-        //                content: { image in
-        //                    image.resizable()
-        //                        .aspectRatio(contentMode: .fit)
-        //                        .frame(maxWidth: 200, maxHeight: 200)
-        //                },
-        //                placeholder: {
-        //                    ProgressView()
-        //                }
-        //            )
-        //            VStack {
-        //                Text("\(manga.attributes?.title?.en ?? "")")
-        //                Text("\(getAltTitles(manga: manga))")
-        //                Text("\(manga.attributes?.description?.en ?? "")")
-        //            }
-        //        }
         HStack {
             coverThumbnail
             VStack {
                 titleStack
-                Text(
-"""
-Guts, known as the Black Swordsman, seeks sanctuary from the demonic forces attracted to him and his woman because of a demonic mark on their necks, and also vengeance against the man who branded him as an unholy sacrifice. Aided only by his titanic strength gained from a harsh childhood lived with mercenaries, a gigantic sword, and an iron prosthetic left hand, Guts must struggle against his bleak destiny, all the while fighting with a rage that might strip him of his humanity.
-"""
-                )
-                .font(.caption)
+                Text("\(mangaVM.getSplitDescription(manga: manga))")
+                    .font(.caption)
                 infoStack
                 tagStack
                 Spacer()
@@ -63,34 +44,51 @@ Guts, known as the Black Swordsman, seeks sanctuary from the demonic forces attr
     }
     
     var coverThumbnail: some View {
-        Image("berserk")
-            .resizable()
-            .frame(maxWidth: 150, maxHeight: 200)
-            .padding(.trailing, 10)
+//        Image("berserk")
+//            .resizable()
+//            .frame(maxWidth: 150, maxHeight: 200)
+//            .padding(.trailing, 10)
+        AsyncImage(
+            url: URL(string: mangaVM.fetchMangaCover(manga)),
+            content: { image in
+                image.resizable()
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(maxWidth: 150, maxHeight: 200)
+                    .padding(.trailing, 10)
+            },
+            placeholder: {
+                ProgressView()
+            }
+            
+        )
     }
     
     var titleStack: some View {
         HStack {
-            Text("Berserk")
+            Text(originalLanguage.getFlag())
                 .font(.title)
-            Text("ベルセルク")
+            
+            Text("\(manga.attributes?.title?.en ?? "")")
+                .font(.title)
+            Text("\(originalLanguage.getAltTitles(manga: manga))")
                 .font(.title2)
-            Text("(Beruseruku)")
-                .font(.title3)
+//            Text("Berserk")
+//                .font(.title)
+//            Text("ベルセルク")
+//                .font(.title2)
             Spacer()
         }
     }
     
     var infoStack: some View {
         HStack {
-            StatusView(status: "ongoing")
-            DemographicView(demographic: "seinen")
-            RatingView(rating: "erotica")
+            StatusView(status: manga.attributes?.status ?? "")
+            DemographicView(demographic: manga.attributes?.publicationDemographic ?? "")
+            RatingView(rating: manga.attributes?.contentRating ?? "")
             Spacer()
         }
     }
-    
-    private var tags: [String] = ["Award Winning", "Monsters", "Action", "Demons", "Psychological", "Adventure", "Sexual Violence", "Philosophical", "Gore", "Drama", "Horror", "Fantasy", "Supernatural", "Tragedy"]
     
     var tagStack: some View {
         ScrollView(.horizontal, showsIndicators: false) {
@@ -100,21 +98,6 @@ Guts, known as the Black Swordsman, seeks sanctuary from the demonic forces attr
                 }
             }
         }
-    }
-    
-    func getAltTitles(manga: Manga) -> String {
-        let originalLanguage = OriginalLanguage(rawValue: manga.attributes?.originalLanguage ?? "")
-        for languages in manga.attributes?.altTitle ?? [] {
-            switch originalLanguage {
-            case .ja:
-                return languages.ja ?? ""
-            case .ko:
-                return languages.ko ?? ""
-            default:
-                return ""
-            }
-        }
-        return ""
     }
 }
 
@@ -135,6 +118,33 @@ enum OriginalLanguage: String {
         default:
             return "OriginalLanguage"
         }
+    }
+    
+    func getFlag() -> String {
+        switch self {
+        case .ja:
+            return "🇯🇵"
+        case .ko:
+            return "🇰🇷"
+        case .en:
+            return "🇺🇸"
+        case .none:
+            return ""
+        }
+    }
+    
+    func getAltTitles(manga: Manga) -> String {
+        for languages in manga.attributes?.altTitle ?? [] {
+            switch self {
+            case .ja:
+                return languages.ja ?? ""
+            case .ko:
+                return languages.ko ?? ""
+            default:
+                return ""
+            }
+        }
+        return ""
     }
 }
 
