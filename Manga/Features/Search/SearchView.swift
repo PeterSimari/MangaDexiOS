@@ -13,20 +13,25 @@ struct SearchView: View {
     @State private var basicSearch: String = ""
     
     var body: some View {
-        VStack {
-            TextField("Search for Manga", text: $basicSearch)
-                .textFieldStyle(.roundedBorder)
-                .onSubmit { mangaVM.searchManga(withTitle: basicSearch) }
-            Spacer()
-            ScrollView(showsIndicators: false) {
-                Spacer().frame(height: 5)
-                ForEach(mangaVM.mangas?.data ?? []) { manga in
-                    MangaSearchPresentView(manga: manga)
+        NavigationStack {
+            VStack {
+                TextField("Search by Title", text: $basicSearch)
+                    .textFieldStyle(.roundedBorder)
+                    .onSubmit { mangaVM.searchManga(withTitle: basicSearch) }
+                Spacer()
+                ScrollView(showsIndicators: false) {
+                    Spacer().frame(height: 5)
+                    ForEach(mangaVM.mangas?.data ?? []) { manga in
+                        NavigationLink(destination: MangaInfoView(mangaID: manga.id)) {
+                            SearchPresentView(manga: manga)
+                        }
+                    }
                 }
             }
+            .navigationTitle("Search")
+            .navigationBarTitleDisplayMode(.inline)
+            .padding(20)
         }
-        .padding(20)
-        .background(.gray)
     }
 }
 

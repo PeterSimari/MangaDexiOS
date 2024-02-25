@@ -11,44 +11,39 @@ import SwiftUI
 struct HomeView: View {
     @StateObject private var mangaVM = MangaViewModel()
     @StateObject private var searchMangaVM = SearchViewModel()
-    @State private var displaySearch: Bool = false
     
     var body: some View {
-        ScrollView {
-            VStack {
-                PopularNewTitles()
-                Seasonal()
-                StaffPicks()
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack {
-                        ForEach(searchMangaVM.mangas?.data ?? []) { manga in
-                            MangaPresentView(manga: manga)
+        NavigationStack {
+            ScrollView {
+                VStack {
+                    PopularNewTitles()
+                    Seasonal()
+                    StaffPicks()
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack {
+                            ForEach(searchMangaVM.mangas?.data ?? []) { manga in
+                                MangaPresentView(manga: manga)
+                            }
+                            .padding(.trailing, 10)
                         }
-                        .padding(.trailing, 10)
+                    }
+                }
+                .padding(.horizontal, 20)
+            }
+            .navigationTitle("Home")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                HStack {
+                    NavigationLink(destination: SearchView()) {
+                        Text("Search")
+                        Image(systemName: "magnifyingglass")
                     }
                 }
             }
-            .padding(.horizontal, 20)
-        }
-        .navigationTitle("Home")
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            HStack {
-                Button {
-                    displaySearch.toggle()
-                } label: {
-                    Text("Search")
-                    Image(systemName: "magnifyingglass")
-                }
+            .onAppear() {
+                //            mangaVM.fetchStaffPicks()
             }
         }
-        .onAppear() {
-//            mangaVM.fetchStaffPicks()
-        }
-        .sheet(isPresented: $displaySearch, content: {
-            SearchView()
-        })
-        
     }
     
 }

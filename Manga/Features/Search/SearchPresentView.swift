@@ -1,5 +1,5 @@
 //
-//  MangaSearchPresentView.swift
+//  SearchPresentView.swift
 //  Manga
 //
 //  Created by Peter Simari on 2/18/24.
@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-struct MangaSearchPresentView: View {
+struct SearchPresentView: View {
     @StateObject private var mangaVM = MangaViewModel()
     var manga: Manga
     var originalLanguage: OriginalLanguage
@@ -27,6 +27,8 @@ struct MangaSearchPresentView: View {
                 titleStack
                 Text("\(mangaVM.getSplitDescription(manga: manga))")
                     .font(.caption)
+                    .multilineTextAlignment(.leading)
+                    .frame(alignment: .leading)
                 infoStack
                 tagStack
                 Spacer()
@@ -41,6 +43,7 @@ struct MangaSearchPresentView: View {
                 .background(.white)
                 .clipShape(RoundedRectangle(cornerRadius: 20))
         )
+        .tint(.primary) // This prevents NavigationStack from rendering all the text as blue
     }
     
     var coverThumbnail: some View {
