@@ -214,8 +214,8 @@
 		9424DA2F2B49F1B80069FBEB /* Networking */ = {
 			isa = PBXGroup;
 			children = (
-				9424DA302B49F1DF0069FBEB /* NetworkError.swift */,
 				94727B4B2B8AE95A007E2C7B /* NetworkCall.swift */,
+				9424DA302B49F1DF0069FBEB /* NetworkError.swift */,
 				94727B542B8BA65D007E2C7B /* Endpoint.swift */,
 			);
 			path = Networking;
