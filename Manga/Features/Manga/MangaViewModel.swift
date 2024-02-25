@@ -13,35 +13,27 @@ final class MangaViewModel: ObservableObject {
     @Published var manga: MangaResponse?
     @Published var manyMangas: MangasResponse?
     @Published var staffPicks: ListResponse?
-    @Published var mangaCover: MangaCoverResponse?
     
     @Published var hasError: Bool = false
     @Published var error: MangaError?
     
     func fetchManga(_ id: String) {
-        let mangaURL: String = "https://api.mangadex.dev/manga/\(id)"
-        if let url: URL = URL(string: mangaURL) {
-            URLSession
-                .shared
-                .dataTask(with: url) { [weak self] data, response, error in
-                    DispatchQueue.main.async {
-                        if let error = error {
-                            self?.hasError = true
-                            self?.error = MangaError.custom(error: error)
-                        } else {
-                            let decoder: JSONDecoder = JSONDecoder()
-                            
-                            if let data = data,
-                               let manga = try? decoder.decode(MangaResponse.self, from: data) {
-                                self?.manga = manga
-                            } else {
-                                self?.hasError = true
-                                self?.error = MangaError.failedToDecode
-                            }
-                        }
-                    }
-                }.resume()
+        guard let request = NetworkCall.makeURLRequest(endpoint: .manga,
+                                                       query: "\(id)") else {
+            return
         }
+        
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            guard let data = data, error == nil else { return }
+            do {
+                let mangasResponse = try JSONDecoder().decode(MangaResponse.self, from: data)
+                DispatchQueue.main.async {
+                    self.manga = mangasResponse
+                }
+            } catch {
+                print("Error decoding JSON")
+            }
+        }.resume()
     }
     
     func fetchManyManga(_ ids: [String]) {
@@ -49,97 +41,41 @@ final class MangaViewModel: ObservableObject {
         for id in ids {
             idURL.append("ids[]\(id)&")
         }
-        let mangaURL: String = "https://api.mangadex.dev/manga/\(idURL)"
-        if let url: URL = URL(string: mangaURL) {
-            URLSession
-                .shared
-                .dataTask(with: url) { [weak self] data, response, error in
-                    DispatchQueue.main.async {
-                        if let error = error {
-                            self?.hasError = true
-                            self?.error = MangaError.custom(error: error)
-                        } else {
-                            let decoder: JSONDecoder = JSONDecoder()
-                            
-                            if let data = data,
-                               let manga = try? decoder.decode(MangasResponse.self, from: data) {
-                                self?.manyMangas = manga
-                            } else {
-                                self?.hasError = true
-                                self?.error = MangaError.failedToDecode
-                            }
-                        }
-                    }
-                }.resume()
+        guard let request = NetworkCall.makeURLRequest(endpoint: .manga,
+                                                       query: "\(idURL)") else {
+            return
         }
-    }
-    
-    func fetchMangaCoverData(_ mangaInfo: Manga) {
-        var mangaCoverID: String = ""
-        for relationships in mangaInfo.relationships ?? [] {
-            if relationships.type == "cover_art" {
-                mangaCoverID = relationships.id
-            }
-        }
-        let mangaCoverURL: String = "https://api.mangadex.dev/cover/\(mangaCoverID)"
-        guard let url: URL = URL(string: mangaCoverURL) else {
-            fatalError("Invalid URL")
-        }
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-        request.setValue("petis API Client - MangaDEX iOS App",
-                         forHTTPHeaderField: "User-Agent")
-        URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
-            DispatchQueue.main.async {
-                if let error = error {
-                    self?.hasError = true
-                    self?.error = MangaError.custom(error: error)
-                } else {
-                    let decoder: JSONDecoder = JSONDecoder()
-                    if let data = data,
-                       let mangaCover = try? decoder.decode(MangaCoverResponse.self, from: data) {
-                        self?.mangaCover = mangaCover
-                    } else {
-                        self?.hasError = true
-                        self?.error = MangaError.failedToDecode
-                    }
+        
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            guard let data = data, error == nil else { return }
+            do {
+                let mangasResponse = try JSONDecoder().decode(MangasResponse.self, from: data)
+                DispatchQueue.main.async {
+                    self.manyMangas = mangasResponse
                 }
+            } catch {
+                print("Error decoding JSON")
             }
         }.resume()
     }
     
-    func fetchMangaCover(_ mangaInfo: Manga) -> String {
-        fetchMangaCoverData(mangaInfo)
-        return "https://uploads.mangadex.dev/covers/\(mangaInfo.id)/\(mangaCover?.data?.attributes?.fileName ?? "")"
-    }
-    
     func fetchStaffPicks() {
-        let url: String = "https://api.mangadex.dev/list/805ba886-dd99-4aa4-b460-4bd7c7b71352?includes[]=user"
-        if let url: URL = URL(string: url) {
-            URLSession
-                .shared
-                .dataTask(with: url) { [weak self] data, response, error in
-                    DispatchQueue.main.async {
-                        if let error = error {
-                            self?.hasError = true
-                            self?.error = MangaError.custom(error: error)
-                        } else {
-                            let decoder: JSONDecoder = JSONDecoder()
-                            
-                            if let data = data,
-                               let manga = try? decoder.decode(ListResponse.self, from: data) {
-                                self?.staffPicks = manga
-                                self?.listToMangaArray(relationships: manga.data?.relationships ?? [])
-                                // convert the array of relationships who's type is Manga to [Manga] in a new function
-                                // iterate through that list when calling this.
-                            } else {
-                                self?.hasError = true
-                                self?.error = MangaError.failedToDecode
-                            }
-                        }
-                    }
-                }.resume()
+        guard let request = NetworkCall.makeURLRequest(endpoint: .list,
+                                                       query: "805ba886-dd99-4aa4-b460-4bd7c7b71352") else {
+            return
         }
+        
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            guard let data = data, error == nil else { return }
+            do {
+                let mangasResponse = try JSONDecoder().decode(ListResponse.self, from: data)
+                DispatchQueue.main.async {
+                    self.staffPicks = mangasResponse
+                }
+            } catch {
+                print("Error decoding JSON")
+            }
+        }.resume()
     }
 
 }

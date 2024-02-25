@@ -10,4 +10,7 @@ import SwiftUI
 
 public enum Endpoint: String {
     case search = "manga?"
+    case manga = "manga"
+    case list = "list"
+    case cover = "cover"
 }

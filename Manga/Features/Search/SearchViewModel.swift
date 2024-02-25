@@ -11,18 +11,18 @@ import SwiftUI
 final class SearchViewModel: ObservableObject {
     @Published var mangas: MangasResponse?
     var limit: Int
-    var endpoint: String
+    var limitString: String
     
     init(mangas: MangasResponse? = nil) {
         self.mangas = mangas
         self.limit = 10
-        self.endpoint = "limit=\(limit)"
+        self.limitString = "limit=\(limit)"
     }
     
     
     func searchManga(withTitle title: String) {
         guard let request = NetworkCall.makeURLRequest(endpoint: .search,
-                                                       query: "\(endpoint)&title=\(title)&includes[]=author&includes[]=artist&includes[]=cover_art") else {
+                                                       query: "\(limitString)&title=\(title)&includes[]=author&includes[]=artist&includes[]=cover_art") else {
             return
         }
         
