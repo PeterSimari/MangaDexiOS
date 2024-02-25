@@ -20,10 +20,10 @@ struct HomeView: View {
                 StaffPicks()
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack {
-                        ForEach(mangaVM.mangas?.data ?? []) { manga in
-                            MangaPresentView(manga: manga)
-                        }
-                        .padding(.trailing, 10)
+//                        ForEach($mangaVM.mangas.data ?? []) { manga in
+//                            MangaPresentView(manga: manga)
+//                        }
+//                        .padding(.trailing, 10)
                     }
                 }
             }

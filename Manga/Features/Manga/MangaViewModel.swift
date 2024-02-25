@@ -11,13 +11,12 @@ import SwiftUI
 final class MangaViewModel: ObservableObject {
     
     @Published var manga: MangaResponse?
-    @Published var mangas: MangasResponse?
     @Published var manyMangas: MangasResponse?
     @Published var staffPicks: ListResponse?
     @Published var mangaCover: MangaCoverResponse?
     
     @Published var hasError: Bool = false
-    @Published var error: UserError?
+    @Published var error: MangaError?
     
     func fetchManga(_ id: String) {
         let mangaURL: String = "https://api.mangadex.dev/manga/\(id)"
@@ -28,7 +27,7 @@ final class MangaViewModel: ObservableObject {
                     DispatchQueue.main.async {
                         if let error = error {
                             self?.hasError = true
-                            self?.error = UserError.custom(error: error)
+                            self?.error = MangaError.custom(error: error)
                         } else {
                             let decoder: JSONDecoder = JSONDecoder()
                             
@@ -37,7 +36,7 @@ final class MangaViewModel: ObservableObject {
                                 self?.manga = manga
                             } else {
                                 self?.hasError = true
-                                self?.error = UserError.failedToDecode
+                                self?.error = MangaError.failedToDecode
                             }
                         }
                     }
@@ -58,7 +57,7 @@ final class MangaViewModel: ObservableObject {
                     DispatchQueue.main.async {
                         if let error = error {
                             self?.hasError = true
-                            self?.error = UserError.custom(error: error)
+                            self?.error = MangaError.custom(error: error)
                         } else {
                             let decoder: JSONDecoder = JSONDecoder()
                             
@@ -67,41 +66,12 @@ final class MangaViewModel: ObservableObject {
                                 self?.manyMangas = manga
                             } else {
                                 self?.hasError = true
-                                self?.error = UserError.failedToDecode
+                                self?.error = MangaError.failedToDecode
                             }
                         }
                     }
                 }.resume()
         }
-    }
-    
-    func searchManga(title: String) {
-        let mangaURL: String = "https://api.mangadex.dev/manga?limit=10&title=\(title)"
-        guard let url: URL = URL(string: mangaURL) else {
-            fatalError("Invalid URL")
-        }
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-        request.setValue("petis API Client - MangaDEX iOS App", 
-                         forHTTPHeaderField: "User-Agent")
-        URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
-            DispatchQueue.main.async {
-                if let error = error {
-                    self?.hasError = true
-                    self?.error = UserError.custom(error: error)
-                } else {
-                    let decoder: JSONDecoder = JSONDecoder()
-
-                    if let data = data,
-                       let manga = try? decoder.decode(MangasResponse.self, from: data) {
-                        self?.mangas = manga
-                    } else {
-                        self?.hasError = true
-                        self?.error = UserError.failedToDecode
-                    }
-                }
-            }
-        }.resume()
     }
     
     func fetchMangaCoverData(_ mangaInfo: Manga) {
@@ -123,7 +93,7 @@ final class MangaViewModel: ObservableObject {
             DispatchQueue.main.async {
                 if let error = error {
                     self?.hasError = true
-                    self?.error = UserError.custom(error: error)
+                    self?.error = MangaError.custom(error: error)
                 } else {
                     let decoder: JSONDecoder = JSONDecoder()
                     if let data = data,
@@ -131,7 +101,7 @@ final class MangaViewModel: ObservableObject {
                         self?.mangaCover = mangaCover
                     } else {
                         self?.hasError = true
-                        self?.error = UserError.failedToDecode
+                        self?.error = MangaError.failedToDecode
                     }
                 }
             }
@@ -152,7 +122,7 @@ final class MangaViewModel: ObservableObject {
                     DispatchQueue.main.async {
                         if let error = error {
                             self?.hasError = true
-                            self?.error = UserError.custom(error: error)
+                            self?.error = MangaError.custom(error: error)
                         } else {
                             let decoder: JSONDecoder = JSONDecoder()
                             
@@ -164,7 +134,7 @@ final class MangaViewModel: ObservableObject {
                                 // iterate through that list when calling this.
                             } else {
                                 self?.hasError = true
-                                self?.error = UserError.failedToDecode
+                                self?.error = MangaError.failedToDecode
                             }
                         }
                     }
@@ -208,14 +178,17 @@ extension MangaViewModel {
 }
 
 extension MangaViewModel {
-    enum UserError: LocalizedError {
+    enum MangaError: Error {
         case custom(error: Error)
         case failedToDecode
+        case invalidURL
         
         var errorDescription: String? {
             switch self {
             case .failedToDecode:
                 return "Failed to decode response"
+            case .invalidURL:
+                return "URL is not correct"
             case .custom(let error):
                 return error.localizedDescription
             }
