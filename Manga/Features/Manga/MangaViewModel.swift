@@ -20,7 +20,7 @@ final class MangaViewModel: ObservableObject {
     @Published var error: UserError?
     
     func fetchManga(_ id: String) {
-        let mangaURL: String = "https://api.mangadex.org/manga/\(id)"
+        let mangaURL: String = "https://api.mangadex.dev/manga/\(id)"
         if let url: URL = URL(string: mangaURL) {
             URLSession
                 .shared
@@ -50,7 +50,7 @@ final class MangaViewModel: ObservableObject {
         for id in ids {
             idURL.append("ids[]\(id)&")
         }
-        let mangaURL: String = "https://api.mangadex.org/manga/\(idURL)"
+        let mangaURL: String = "https://api.mangadex.dev/manga/\(idURL)"
         if let url: URL = URL(string: mangaURL) {
             URLSession
                 .shared
@@ -75,8 +75,8 @@ final class MangaViewModel: ObservableObject {
         }
     }
     
-    func searchManga() {
-        let mangaURL: String = "https://api.mangadex.org/manga?limit=20&title=berserk&includedTagsMode=AND&excludedTagsMode=OR&contentRating%5B%5D=safe&contentRating%5B%5D=suggestive&contentRating%5B%5D=erotica&order%5BlatestUploadedChapter%5D=desc"
+    func searchManga(title: String) {
+        let mangaURL: String = "https://api.mangadex.dev/manga?limit=10&title=\(title)"
         guard let url: URL = URL(string: mangaURL) else {
             fatalError("Invalid URL")
         }
@@ -111,7 +111,7 @@ final class MangaViewModel: ObservableObject {
                 mangaCoverID = relationships.id
             }
         }
-        let mangaCoverURL: String = "https://api.mangadex.org/cover/\(mangaCoverID)"
+        let mangaCoverURL: String = "https://api.mangadex.dev/cover/\(mangaCoverID)"
         guard let url: URL = URL(string: mangaCoverURL) else {
             fatalError("Invalid URL")
         }
@@ -140,7 +140,7 @@ final class MangaViewModel: ObservableObject {
     
     func fetchMangaCover(_ mangaInfo: Manga) -> String {
         fetchMangaCoverData(mangaInfo)
-        return "https://uploads.mangadex.org/covers/\(mangaInfo.id)/\(mangaCover?.data?.attributes?.fileName ?? "")"
+        return "https://uploads.mangadex.dev/covers/\(mangaInfo.id)/\(mangaCover?.data?.attributes?.fileName ?? "")"
     }
     
     func fetchStaffPicks() {
@@ -186,6 +186,24 @@ extension MangaViewModel {
         }
         // Call the fetchManga which takes in multiple manga IDs (need new model for this)
         fetchManyManga(mangaIDs)
+    }
+}
+
+extension MangaViewModel {
+    // This will be used to turn data into something we want to display to the user
+    
+    func getTags(manga: Manga) -> [String] {
+        var tagArray: [String] = []
+        for tag in manga.attributes?.tags ?? [] {
+            tagArray.append(tag.attributes?.name?.en ?? "")
+        }
+        return tagArray
+    }
+    
+    func getSplitDescription(manga: Manga) -> String {
+        let description: String = manga.attributes?.description?.en ?? ""
+        let descriptionSplit = description.components(separatedBy: "\n")
+        return descriptionSplit[0]
     }
 }
 
