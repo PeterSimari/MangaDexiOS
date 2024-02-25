@@ -10,6 +10,7 @@ import SwiftUI
 
 struct HomeView: View {
     @StateObject private var mangaVM = MangaViewModel()
+    @StateObject private var searchMangaVM = SearchViewModel()
     @State private var displaySearch: Bool = false
     
     var body: some View {
@@ -20,7 +21,7 @@ struct HomeView: View {
                 StaffPicks()
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack {
-                        ForEach(mangaVM.mangas?.data ?? []) { manga in
+                        ForEach(searchMangaVM.mangas?.data ?? []) { manga in
                             MangaPresentView(manga: manga)
                         }
                         .padding(.trailing, 10)
