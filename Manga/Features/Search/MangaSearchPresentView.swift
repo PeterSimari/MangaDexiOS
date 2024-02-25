@@ -44,12 +44,8 @@ struct MangaSearchPresentView: View {
     }
     
     var coverThumbnail: some View {
-//        Image("berserk")
-//            .resizable()
-//            .frame(maxWidth: 150, maxHeight: 200)
-//            .padding(.trailing, 10)
         AsyncImage(
-            url: URL(string: mangaVM.fetchMangaCover(manga)),
+            url: URL(string: generateCoverURL()),
             content: { image in
                 image.resizable()
                     .resizable()
@@ -62,6 +58,19 @@ struct MangaSearchPresentView: View {
             }
             
         )
+    }
+    
+    func generateCoverURL() -> String {
+        let baseURL: String = "https://uploads.mangadex.dev/covers/"
+        let mangaID: String = manga.id
+        var coverLocation: String = ""
+        for relationship in manga.relationships ?? [] {
+            if relationship.type == "cover_art" {
+                coverLocation = relationship.attributes?.fileName ?? ""
+            }
+        }
+        
+        return "\(baseURL)\(mangaID)/\(coverLocation)"
     }
     
     var titleStack: some View {

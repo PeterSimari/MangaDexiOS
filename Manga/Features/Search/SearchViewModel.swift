@@ -16,12 +16,13 @@ final class SearchViewModel: ObservableObject {
     init(mangas: MangasResponse? = nil) {
         self.mangas = mangas
         self.limit = 10
-        self.endpoint = "manga?limit=\(limit)"
+        self.endpoint = "limit=\(limit)"
     }
     
     
     func searchManga(withTitle title: String) {
-        guard let request = NetworkCall.makeURLRequest(endpoint: "\(endpoint)&title=\(title)") else {
+        guard let request = NetworkCall.makeURLRequest(endpoint: .search,
+                                                       query: "\(endpoint)&title=\(title)&includes[]=author&includes[]=artist&includes[]=cover_art") else {
             return
         }
         

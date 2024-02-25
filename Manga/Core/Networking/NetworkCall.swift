@@ -16,20 +16,37 @@ public enum Environment: String {
 
 public class NetworkCall {
     
+    public enum HttpMethod {
+        case get, post
+        
+        func toString() -> String {
+            switch self {
+            case .get: return "GET"
+            case .post: return "POST"
+            }
+        }
+    }
+    
     static private func createURLString() -> String {
         return "https://api.mangadex.\(Environment.env.rawValue)"
     }
     
-    static func makeURLRequest(endpoint: String) -> URLRequest? {
-        guard let url = URL(string: "\(createURLString())/\(endpoint)") else {
+    static func makeURLRequest(endpoint: Endpoint, query: String, httpMethod: HttpMethod = .get) -> URLRequest? {
+        guard let url = URL(string: "\(createURLString())/\(endpoint.rawValue)\(query)") else {
             return nil
         }
         
         var request = URLRequest(url: url)
         
-//        request.httpMethod = "GET"
-//        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-//        request.setValue("Bearer (token)", forHTTPHeaderField: "Authorization")
+        switch httpMethod {
+        case .get:
+            request.httpMethod = httpMethod.toString()
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        case .post:
+            request.httpMethod = httpMethod.toString()
+        }
+        // this is for an auth token if we ever need one (currently dont)
+//        request.setValue("Bearer \(Token.token)", forHTTPHeaderField: "Authorization")
         request.setValue("petis API Client - MangaDEX iOS App",
                          forHTTPHeaderField: "User-Agent")
         

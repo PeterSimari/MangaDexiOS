@@ -40,7 +40,8 @@ struct MangaRelationship: Identifiable, Codable {
 }
 
 struct MangaRelationshipAttributes: Codable {
-    
+    let name: String?
+    let fileName: String?
 }
 
 struct MangaAttributes: Codable {
