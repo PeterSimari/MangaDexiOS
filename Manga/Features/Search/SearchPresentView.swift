@@ -38,8 +38,8 @@ struct SearchPresentView: View {
         .padding(20)
         .background(
             RoundedRectangle(cornerRadius: 20)
-                .inset(by: 3)
-                .stroke(.black, lineWidth: 5)
+                .inset(by: 1)
+                .stroke(.black, lineWidth: 2)
                 .background(.white)
                 .clipShape(RoundedRectangle(cornerRadius: 20))
         )
@@ -48,10 +48,9 @@ struct SearchPresentView: View {
     
     var coverThumbnail: some View {
         AsyncImage(
-            url: URL(string: generateCoverURL()),
+            url: URL(string: mangaVM.generateCoverURL(manga: manga)),
             content: { image in
                 image.resizable()
-                    .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(maxWidth: 150, maxHeight: 200)
                     .padding(.trailing, 10)
@@ -59,21 +58,7 @@ struct SearchPresentView: View {
             placeholder: {
                 ProgressView()
             }
-            
         )
-    }
-    
-    func generateCoverURL() -> String {
-        let baseURL: String = "https://uploads.mangadex.dev/covers/"
-        let mangaID: String = manga.id
-        var coverLocation: String = ""
-        for relationship in manga.relationships ?? [] {
-            if relationship.type == "cover_art" {
-                coverLocation = relationship.attributes?.fileName ?? ""
-            }
-        }
-        
-        return "\(baseURL)\(mangaID)/\(coverLocation)"
     }
     
     var titleStack: some View {

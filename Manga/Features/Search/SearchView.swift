@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 struct SearchView: View {
-    @StateObject private var mangaVM = SearchViewModel()
+    @StateObject private var searchVM = SearchViewModel()
     @State private var basicSearch: String = ""
     
     var body: some View {
@@ -17,12 +17,12 @@ struct SearchView: View {
             VStack {
                 TextField("Search by Title", text: $basicSearch)
                     .textFieldStyle(.roundedBorder)
-                    .onSubmit { mangaVM.searchManga(withTitle: basicSearch) }
+                    .onSubmit { searchVM.searchManga(withTitle: basicSearch) }
                 Spacer()
                 ScrollView(showsIndicators: false) {
                     Spacer().frame(height: 5)
-                    ForEach(mangaVM.mangas?.data ?? []) { manga in
-                        NavigationLink(destination: MangaInfoView(mangaID: manga.id)) {
+                    ForEach(searchVM.mangas?.data ?? []) { manga in
+                        NavigationLink(destination: MangaInfoView(manga: manga)) {
                             SearchPresentView(manga: manga)
                         }
                     }
