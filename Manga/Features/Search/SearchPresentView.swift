@@ -40,7 +40,7 @@ struct SearchPresentView: View {
             RoundedRectangle(cornerRadius: 20)
                 .inset(by: 1)
                 .stroke(.black, lineWidth: 2)
-                .background(.white)
+                .background(.mangaDarkGray)
                 .clipShape(RoundedRectangle(cornerRadius: 20))
         )
         .tint(.primary) // This prevents NavigationStack from rendering all the text as blue
@@ -70,10 +70,6 @@ struct SearchPresentView: View {
                 .font(.title)
             Text("\(originalLanguage.getAltTitles(manga: manga))")
                 .font(.title2)
-//            Text("Berserk")
-//                .font(.title)
-//            Text("ベルセルク")
-//                .font(.title2)
             Spacer()
         }
     }
