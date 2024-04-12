@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		940A5A512BC98E1B00E82E6B /* OriginalLanguage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 940A5A502BC98E1B00E82E6B /* OriginalLanguage.swift */; };
 		9424D9F92B446E410069FBEB /* MangaApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9424D9F82B446E410069FBEB /* MangaApp.swift */; };
 		9424D9FD2B446E420069FBEB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9424D9FC2B446E420069FBEB /* Assets.xcassets */; };
 		9424DA002B446E420069FBEB /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9424D9FF2B446E420069FBEB /* Preview Assets.xcassets */; };
@@ -55,6 +56,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		940A5A502BC98E1B00E82E6B /* OriginalLanguage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OriginalLanguage.swift; sourceTree = "<group>"; };
 		9424D9F52B446E410069FBEB /* Manga.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Manga.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9424D9F82B446E410069FBEB /* MangaApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MangaApp.swift; sourceTree = "<group>"; };
 		9424D9FC2B446E420069FBEB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -231,6 +233,7 @@
 				9424DA3B2B5895BA0069FBEB /* ListModel.swift */,
 				9424DA352B57186C0069FBEB /* MangaViewModel.swift */,
 				94727B562B8BE12C007E2C7B /* MangaInfoView.swift */,
+				940A5A502BC98E1B00E82E6B /* OriginalLanguage.swift */,
 			);
 			path = Manga;
 			sourceTree = "<group>";
@@ -396,6 +399,7 @@
 				94727B512B8AF738007E2C7B /* SearchViewModel.swift in Sources */,
 				9463A6112B82A1D000399224 /* SearchPresentView.swift in Sources */,
 				947F97F92B83F7DB00A6A85A /* DemographicView.swift in Sources */,
+				940A5A512BC98E1B00E82E6B /* OriginalLanguage.swift in Sources */,
 				9424D9F92B446E410069FBEB /* MangaApp.swift in Sources */,
 				94727B552B8BA65D007E2C7B /* Endpoint.swift in Sources */,
 				9463A6132B830EC400399224 /* SearchView.swift in Sources */,
@@ -578,6 +582,7 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIStatusBarStyle = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -607,6 +612,7 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIStatusBarStyle = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
