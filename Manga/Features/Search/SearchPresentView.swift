@@ -47,18 +47,23 @@ struct SearchPresentView: View {
     }
     
     var coverThumbnail: some View {
-        AsyncImage(
-            url: URL(string: mangaVM.generateCoverURL(manga: manga)),
-            content: { image in
-                image.resizable()
+        AsyncImage(url: URL(string: mangaVM.generateCoverURL(manga: manga))) { phase in
+            switch phase {
+            case .empty:
+                Text("loading")
+            case .success(let image):
+                image
+                    .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(maxWidth: 150, maxHeight: 200)
                     .padding(.trailing, 10)
-            },
-            placeholder: {
+            case .failure:
+                Text("failure")
+            @unknown default:
                 ProgressView()
+                Text("unknown")
             }
-        )
+        }
     }
     
     var titleStack: some View {

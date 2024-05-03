@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		940A5A512BC98E1B00E82E6B /* OriginalLanguage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 940A5A502BC98E1B00E82E6B /* OriginalLanguage.swift */; };
 		940A5A532BC9D05900E82E6B /* MangaColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 940A5A522BC9D05900E82E6B /* MangaColor.swift */; };
+		940A5A552BC9D3DD00E82E6B /* MangaFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 940A5A542BC9D3DD00E82E6B /* MangaFont.swift */; };
 		9424D9F92B446E410069FBEB /* MangaApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9424D9F82B446E410069FBEB /* MangaApp.swift */; };
 		9424D9FD2B446E420069FBEB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9424D9FC2B446E420069FBEB /* Assets.xcassets */; };
 		9424DA002B446E420069FBEB /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9424D9FF2B446E420069FBEB /* Preview Assets.xcassets */; };
@@ -59,6 +60,7 @@
 /* Begin PBXFileReference section */
 		940A5A502BC98E1B00E82E6B /* OriginalLanguage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OriginalLanguage.swift; sourceTree = "<group>"; };
 		940A5A522BC9D05900E82E6B /* MangaColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MangaColor.swift; sourceTree = "<group>"; };
+		940A5A542BC9D3DD00E82E6B /* MangaFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MangaFont.swift; sourceTree = "<group>"; };
 		9424D9F52B446E410069FBEB /* Manga.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Manga.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9424D9F82B446E410069FBEB /* MangaApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MangaApp.swift; sourceTree = "<group>"; };
 		9424D9FC2B446E420069FBEB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -186,6 +188,7 @@
 				94727B522B8B08C5007E2C7B /* Token.swift */,
 				940A5A522BC9D05900E82E6B /* MangaColor.swift */,
 				9424DA2D2B460CFB0069FBEB /* Dimensions.swift */,
+				940A5A542BC9D3DD00E82E6B /* MangaFont.swift */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -415,6 +418,7 @@
 				947F97F52B83BFCC00A6A85A /* TagView.swift in Sources */,
 				9424DA362B57186C0069FBEB /* MangaViewModel.swift in Sources */,
 				9424DA3C2B5895BA0069FBEB /* ListModel.swift in Sources */,
+				940A5A552BC9D3DD00E82E6B /* MangaFont.swift in Sources */,
 				947F97F72B83E0AB00A6A85A /* StatusView.swift in Sources */,
 				940A5A532BC9D05900E82E6B /* MangaColor.swift in Sources */,
 			);
