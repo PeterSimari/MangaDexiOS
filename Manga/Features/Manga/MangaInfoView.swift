@@ -36,8 +36,8 @@ struct MangaInfoView: View {
     
     var frontImage: some View {
         CoverArtImage(url: mangaVM.generateCoverURL(manga: manga),
-                      width: 300,
-                      height: 450)
+                      maxWidth: 300,
+                      maxHeight: 800)
             .padding(.leading, 35)
             .padding(.top, 20)
     }
@@ -59,7 +59,8 @@ struct MangaInfoView: View {
             AsyncImage(
                 url: URL(string: mangaVM.generateCoverURL(manga: manga)),
                 content: { image in
-                    image.resizable()
+                    image
+                        .resizable()
                         .scaledToFill()
                         .frame(height: 350, alignment: .top)
                         .opacity(0.5)

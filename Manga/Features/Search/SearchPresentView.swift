@@ -56,6 +56,7 @@ struct SearchPresentView: View {
             
             Text("\(manga.attributes?.title?.en ?? "")")
                 .font(.title)
+                .multilineTextAlignment(.leading)
             Text("\(originalLanguage.getAltTitles(manga: manga))")
                 .font(.title2)
             Spacer()
