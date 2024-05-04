@@ -53,9 +53,6 @@ struct SearchPresentView: View {
     
     var titleStack: some View {
         HStack {
-            Text(originalLanguage.getFlag())
-                .font(.title)
-            
             Text("\(manga.attributes?.title?.en ?? "")")
                 .font(.title)
                 .multilineTextAlignment(.leading)
@@ -67,6 +64,8 @@ struct SearchPresentView: View {
     
     var authorStack: some View {
         HStack {
+            Text(originalLanguage.getFlag())
+                .font(.title)
             Text("\(mangaVM.getArtistName(manga: manga))")
             Spacer()
         }

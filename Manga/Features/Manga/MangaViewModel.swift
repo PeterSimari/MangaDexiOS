@@ -129,6 +129,16 @@ extension MangaViewModel {
         return tagArray
     }
     
+    func getFullDescription(manga: Manga) -> String {
+        return manga.attributes?.description?.en ?? ""
+    }
+    
+    func getDescriptionPreDash(manga: Manga) -> String {
+        let description: String = manga.attributes?.description?.en ?? ""
+        let descriptionSplit = description.components(separatedBy: "---")
+        return descriptionSplit[0]
+    }
+    
     func getSplitDescription(manga: Manga) -> String {
         let description: String = manga.attributes?.description?.en ?? ""
         let descriptionSplit = description.components(separatedBy: "\n")

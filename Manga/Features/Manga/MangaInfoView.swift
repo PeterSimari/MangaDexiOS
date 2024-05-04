@@ -35,20 +35,38 @@ struct MangaInfoView: View {
     }
     
     var frontImage: some View {
-        CoverArtAsyncImage(url: mangaVM.generateCoverURL(manga: manga),
-                      maxWidth: 300,
-                      maxHeight: 800)
-            .padding(.leading, 35)
+        VStack {
+            CoverArtAsyncImage(url: mangaVM.generateCoverURL(manga: manga),
+                               maxWidth: 250)
+            .padding(.leading, 25)
+            .padding(.trailing, 10)
             .padding(.top, 20)
+            Spacer()
+        }
     }
     
     var titleStack: some View {
         VStack {
-            Text("\(OriginalLanguage(rawValue: manga.attributes?.originalLanguage ?? "")?.getFlag() ?? "")")
-                .font(.largeTitle)
-            Text("\(manga.attributes?.title?.en ?? "")")
-                .font(.largeTitle)
-            
+            HStack {
+                Text("\(manga.attributes?.title?.en ?? "")")
+                    .font(.largeTitle)
+                    .multilineTextAlignment(.leading)
+                    .frame(alignment: .leading)
+                Spacer()
+            }
+            HStack {
+                Text("\(OriginalLanguage(rawValue: manga.attributes?.originalLanguage ?? "")?.getFlag() ?? "")")
+                    .font(.largeTitle)
+                Text("\(mangaVM.getArtistName(manga: manga))")
+                    .font(.title)
+                Spacer()
+            }
+            HStack {
+                Text("\(mangaVM.getDescriptionPreDash(manga: manga))")
+                    .multilineTextAlignment(.leading)
+                    .frame(alignment: .leading)
+                Spacer()
+            }
             Spacer()
         }
         .padding(.top, 20)
@@ -59,25 +77,10 @@ struct MangaInfoView: View {
             CoverArtAsyncImage(url: mangaVM.generateCoverURL(manga: manga),
                           imageScaler: .scaledToFill,
                           contentMode: .fill,
-                          height: 350,
+                          height: 450,
                           alignment: .top,
                           opacity: 0.5,
                           blurRadius: 10)
-//            AsyncImage(
-//                url: URL(string: mangaVM.generateCoverURL(manga: manga)),
-//                content: { image in
-//                    image
-//                        .resizable()
-//                        .scaledToFill()
-//                        .frame(height: 350, alignment: .top)
-//                        .opacity(0.5)
-//                        .clipped()
-//                        .blur(radius: 10)
-//                },
-//                placeholder: {
-//                    ProgressView()
-//                }
-//            )
             Spacer()
         }
     }
