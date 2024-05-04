@@ -35,27 +35,20 @@ struct MangaInfoView: View {
     }
     
     var frontImage: some View {
-        AsyncImage(
-            url: URL(string: mangaVM.generateCoverURL(manga: manga)),
-            content: { image in
-                image.resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(maxWidth: 300, maxHeight: 450)
-                    .padding(.leading, 35)
-                    .padding(.top, 20)
-            },
-            placeholder: {
-                ProgressView()
-            }
-        )
+        CoverArtImage(url: mangaVM.generateCoverURL(manga: manga),
+                      width: 300,
+                      height: 450)
+            .padding(.leading, 35)
+            .padding(.top, 20)
     }
     
     var titleStack: some View {
         VStack {
+            Text("\(OriginalLanguage(rawValue: manga.attributes?.originalLanguage ?? "")?.getFlag() ?? "")")
+                .font(.largeTitle)
             Text("\(manga.attributes?.title?.en ?? "")")
                 .font(.largeTitle)
-            Text("\(OriginalLanguage(rawValue: manga.attributes?.originalLanguage ?? "")?.getFlag() ?? "")")
-                
+            
             Spacer()
         }
         .padding(.top, 20)
@@ -71,7 +64,7 @@ struct MangaInfoView: View {
                         .frame(height: 350, alignment: .top)
                         .opacity(0.5)
                         .clipped()
-                        .blur(radius: 3)
+                        .blur(radius: 10)
                 },
                 placeholder: {
                     ProgressView()

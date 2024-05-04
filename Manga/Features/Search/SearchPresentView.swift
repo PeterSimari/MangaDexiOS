@@ -25,10 +25,8 @@ struct SearchPresentView: View {
             coverThumbnail
             VStack {
                 titleStack
-                Text("\(mangaVM.getSplitDescription(manga: manga))")
-                    .font(.caption)
-                    .multilineTextAlignment(.leading)
-                    .frame(alignment: .leading)
+                authorStack
+                descriptionStack
                 infoStack
                 tagStack
                 Spacer()
@@ -47,23 +45,8 @@ struct SearchPresentView: View {
     }
     
     var coverThumbnail: some View {
-        AsyncImage(url: URL(string: mangaVM.generateCoverURL(manga: manga))) { phase in
-            switch phase {
-            case .empty:
-                Text("loading")
-            case .success(let image):
-                image
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(maxWidth: 150, maxHeight: 200)
-                    .padding(.trailing, 10)
-            case .failure:
-                Text("failure")
-            @unknown default:
-                ProgressView()
-                Text("unknown")
-            }
-        }
+        CoverArtImage(url: mangaVM.generateCoverURL(manga: manga))
+            .padding(.trailing, 10)
     }
     
     var titleStack: some View {
@@ -75,6 +58,23 @@ struct SearchPresentView: View {
                 .font(.title)
             Text("\(originalLanguage.getAltTitles(manga: manga))")
                 .font(.title2)
+            Spacer()
+        }
+    }
+    
+    var authorStack: some View {
+        HStack {
+            Text("\(mangaVM.getArtistName(manga: manga))")
+            Spacer()
+        }
+    }
+    
+    var descriptionStack: some View {
+        HStack {
+            Text("\(mangaVM.getSplitDescription(manga: manga))")
+                .font(.caption)
+                .multilineTextAlignment(.leading)
+                .frame(alignment: .leading)
             Spacer()
         }
     }

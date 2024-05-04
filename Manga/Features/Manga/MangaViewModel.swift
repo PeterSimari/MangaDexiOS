@@ -107,6 +107,15 @@ extension MangaViewModel {
         }
         return ""
     }
+    
+    func getArtistName(manga: Manga) -> String {
+        for relationship in manga.relationships ?? [] {
+            if relationship.type == "artist" {
+                return relationship.attributes?.name ?? ""
+            }
+        }
+        return ""
+    }
 }
 
 extension MangaViewModel {
