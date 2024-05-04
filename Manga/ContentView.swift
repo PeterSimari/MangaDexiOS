@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State public var path = NavigationPath()
+    
     var body: some View {
         VStack {
             TabView {

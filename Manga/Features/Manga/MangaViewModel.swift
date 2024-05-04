@@ -19,7 +19,7 @@ final class MangaViewModel: ObservableObject {
     
     func fetchManga(_ id: String) {
         guard let request = NetworkCall.makeURLRequest(endpoint: .manga,
-                                                       query: "\(id)") else {
+                                                       query: "\(id)?includes[]=artist&includes[]=cover_art") else {
             return
         }
         
@@ -92,6 +92,29 @@ extension MangaViewModel {
         }
         // Call the fetchManga which takes in multiple manga IDs (need new model for this)
         fetchManyManga(mangaIDs)
+    }
+    
+    func generateCoverURL(manga: Manga) -> String {
+        let baseURL: String = "https://uploads.mangadex.dev/covers/"
+        return "\(baseURL)\(manga.id)/\(getCoverURL(manga: manga))"
+    }
+    
+    private func getCoverURL(manga: Manga) -> String {
+        for relationship in manga.relationships ?? [] {
+            if relationship.type == "cover_art" {
+                return relationship.attributes?.fileName ?? ""
+            }
+        }
+        return ""
+    }
+    
+    func getArtistName(manga: Manga) -> String {
+        for relationship in manga.relationships ?? [] {
+            if relationship.type == "artist" {
+                return relationship.attributes?.name ?? ""
+            }
+        }
+        return ""
     }
 }
 

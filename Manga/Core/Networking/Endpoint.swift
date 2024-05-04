@@ -9,7 +9,7 @@ import Foundation
 
 public enum Endpoint: String {
     case search = "manga?"
-    case manga = "manga"
-    case list = "list"
-    case cover = "cover"
+    case manga = "manga/"
+    case list = "list/"
+    case cover = "cover/"
 }
