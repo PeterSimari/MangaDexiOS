@@ -35,7 +35,7 @@ struct MangaInfoView: View {
     }
     
     var frontImage: some View {
-        CoverArtImage(url: mangaVM.generateCoverURL(manga: manga),
+        CoverArtAsyncImage(url: mangaVM.generateCoverURL(manga: manga),
                       maxWidth: 300,
                       maxHeight: 800)
             .padding(.leading, 35)
@@ -56,21 +56,28 @@ struct MangaInfoView: View {
     
     var backgroundImage: some View {
         VStack {
-            AsyncImage(
-                url: URL(string: mangaVM.generateCoverURL(manga: manga)),
-                content: { image in
-                    image
-                        .resizable()
-                        .scaledToFill()
-                        .frame(height: 350, alignment: .top)
-                        .opacity(0.5)
-                        .clipped()
-                        .blur(radius: 10)
-                },
-                placeholder: {
-                    ProgressView()
-                }
-            )
+            CoverArtAsyncImage(url: mangaVM.generateCoverURL(manga: manga),
+                          imageScaler: .scaledToFill,
+                          contentMode: .fill,
+                          height: 350,
+                          alignment: .top,
+                          opacity: 0.5,
+                          blurRadius: 10)
+//            AsyncImage(
+//                url: URL(string: mangaVM.generateCoverURL(manga: manga)),
+//                content: { image in
+//                    image
+//                        .resizable()
+//                        .scaledToFill()
+//                        .frame(height: 350, alignment: .top)
+//                        .opacity(0.5)
+//                        .clipped()
+//                        .blur(radius: 10)
+//                },
+//                placeholder: {
+//                    ProgressView()
+//                }
+//            )
             Spacer()
         }
     }

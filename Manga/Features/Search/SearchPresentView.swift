@@ -45,7 +45,9 @@ struct SearchPresentView: View {
     }
     
     var coverThumbnail: some View {
-        CoverArtImage(url: mangaVM.generateCoverURL(manga: manga))
+        CoverArtAsyncImage(url: mangaVM.generateCoverURL(manga: manga),
+                      maxWidth: 150,
+                      maxHeight: 200)
             .padding(.trailing, 10)
     }
     
