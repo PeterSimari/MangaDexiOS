@@ -18,7 +18,7 @@ struct MangaInfoView: View {
                 backgroundImage
                 frontContent
             }
-            .navigationTitle(manga.attributes?.title?.en ?? "")
+            .navigationTitle(mangaVM.getShortTitle(manga))
         }
     }
     
@@ -48,21 +48,21 @@ struct MangaInfoView: View {
     var titleStack: some View {
         VStack {
             HStack {
-                Text("\(manga.attributes?.title?.en ?? "")")
+                Text("\(mangaVM.getTitle(manga))")
                     .font(.largeTitle)
                     .multilineTextAlignment(.leading)
                     .frame(alignment: .leading)
                 Spacer()
             }
             HStack {
-                Text("\(OriginalLanguage(rawValue: manga.attributes?.originalLanguage ?? "")?.getFlag() ?? "")")
+                Text("\(OriginalLanguage(rawValue: mangaVM.getOriginalLanguage(manga: manga) )?.getFlag() ?? "")")
                     .font(.largeTitle)
-                Text("\(mangaVM.getArtistName(manga: manga))")
+                Text("\(mangaVM.getArtistName(manga))")
                     .font(.title)
                 Spacer()
             }
             HStack {
-                Text("\(mangaVM.getDescriptionPreDash(manga: manga))")
+                Text("\(mangaVM.getDescriptionPreDash(manga))")
                     .multilineTextAlignment(.leading)
                     .frame(alignment: .leading)
                 Spacer()
