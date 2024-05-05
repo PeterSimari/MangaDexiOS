@@ -8,4 +8,6 @@
 import Foundation
 import SwiftUI
 
-
+public struct Constants {
+    var selectedLanguage: OriginalLanguage = .en
+}

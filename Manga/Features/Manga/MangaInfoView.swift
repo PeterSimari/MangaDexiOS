@@ -56,7 +56,7 @@ struct MangaInfoView: View {
                 Spacer()
             }
             HStack {
-                Text("\(OriginalLanguage(rawValue: mangaVM.getOriginalLanguage(manga: manga) )?.getFlag() ?? "")")
+                Text("\(OriginalLanguage(rawValue: mangaVM.getOriginalLanguage(manga) )?.getFlag() ?? "")")
                     .font(.largeTitle)
                 Text("\(mangaVM.getArtistName(manga))")
                     .font(.title)
