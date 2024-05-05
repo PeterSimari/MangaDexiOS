@@ -17,7 +17,7 @@ extension View {
     @inlinable public func determineScaled(_ scaler: ImageScaled) -> some View {
         switch scaler {
         case .none:
-            self.border(.black, width: 0)
+            self
         case .scaledToFit:
             self.scaledToFit()
         case .scaledToFill:
