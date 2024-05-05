@@ -110,10 +110,6 @@ extension MangaViewModel {
 }
 
 extension MangaViewModel {
-    // This will be used to turn data into something we want to display to the user
-    // This is all to compensate for the god awful job i did setting up my model...
-    // Maybe i'll learn when i have to refactor it all down the line for something
-    
     // MARK: Title & Artist Functions
     
     func getTitle(_ manga: Manga) -> String {
@@ -179,13 +175,13 @@ extension MangaViewModel {
     
     // MARK: Original Language Functions
     
-    func getOriginalLanguage(manga: Manga) -> String {
+    func getOriginalLanguage(_ manga: Manga) -> String {
         manga.attributes?.originalLanguage ?? ""
     }
     
     // MARK: Tag Functions
     
-    func getTags(manga: Manga) -> [String] {
+    func getTags(_ manga: Manga) -> [String] {
         var tagArray: [String] = []
         for tag in manga.attributes?.tags ?? [] {
             tagArray.append(tag.attributes?.name?.en ?? "")

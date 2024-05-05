@@ -16,8 +16,8 @@ struct SearchPresentView: View {
     
     init(mangaVM: MangaViewModel = MangaViewModel(), manga: Manga) {
         self.manga = manga
-        self.tags = mangaVM.getTags(manga: manga)
-        self.originalLanguage = OriginalLanguage(rawValue: mangaVM.getOriginalLanguage(manga: manga)) ?? .none
+        self.tags = mangaVM.getTags(manga)
+        self.originalLanguage = OriginalLanguage(rawValue: mangaVM.getOriginalLanguage(manga)) ?? .none
     }
     
     var body: some View {
@@ -85,12 +85,20 @@ struct SearchPresentView: View {
         HStack {
             StatusView(status: mangaVM.getStatus(manga))
             DemographicView(demographic: mangaVM.getDemographic(manga))
-            RatingView(rating: manga.attributes?.contentRating ?? "")
+            RatingView(rating: mangaVM.getRating(manga))
             Spacer()
         }
     }
     
     var tagStack: some View {
+        TagStack(tags: tags)
+    }
+}
+
+struct TagStack: View {
+    var tags: [String]
+    
+    var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack {
                 ForEach(tags, id: \.self) { tag in

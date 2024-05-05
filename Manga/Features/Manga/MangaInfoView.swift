@@ -42,6 +42,7 @@ struct MangaInfoView: View {
             .padding(.trailing, 10)
             .padding(.top, 20)
             Spacer()
+            TagStack(tags: mangaVM.getTags(manga))
         }
     }
     
