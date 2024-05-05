@@ -75,6 +75,7 @@ struct MangaTitle: Codable {
 
 struct MangaDescription: Codable {
     let en: String?
+    let ru: String?
 }
 
 struct MangaLinks: Codable {

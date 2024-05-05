@@ -16,8 +16,8 @@ struct SearchPresentView: View {
     
     init(mangaVM: MangaViewModel = MangaViewModel(), manga: Manga) {
         self.manga = manga
-        self.tags = mangaVM.getTags(manga: manga)
-        self.originalLanguage = OriginalLanguage(rawValue: manga.attributes?.originalLanguage ?? "") ?? .none
+        self.tags = mangaVM.getTags(manga)
+        self.originalLanguage = OriginalLanguage(rawValue: mangaVM.getOriginalLanguage(manga)) ?? .none
     }
     
     var body: some View {
@@ -26,7 +26,7 @@ struct SearchPresentView: View {
             VStack {
                 titleStack
                 authorStack
-                descriptionStack
+//                descriptionStack
                 infoStack
                 tagStack
                 Spacer()
@@ -45,16 +45,15 @@ struct SearchPresentView: View {
     }
     
     var coverThumbnail: some View {
-        CoverArtImage(url: mangaVM.generateCoverURL(manga: manga))
+        CoverArtAsyncImage(url: mangaVM.generateCoverURL(manga: manga),
+                      maxWidth: 100,
+                      maxHeight: 200)
             .padding(.trailing, 10)
     }
     
     var titleStack: some View {
         HStack {
-            Text(originalLanguage.getFlag())
-                .font(.title)
-            
-            Text("\(manga.attributes?.title?.en ?? "")")
+            Text("\(mangaVM.getTitle(manga))")
                 .font(.title)
                 .multilineTextAlignment(.leading)
             Text("\(originalLanguage.getAltTitles(manga: manga))")
@@ -65,14 +64,16 @@ struct SearchPresentView: View {
     
     var authorStack: some View {
         HStack {
-            Text("\(mangaVM.getArtistName(manga: manga))")
+            Text(originalLanguage.getFlag())
+                .font(.title)
+            Text("\(mangaVM.getArtistName(manga))")
             Spacer()
         }
     }
     
     var descriptionStack: some View {
         HStack {
-            Text("\(mangaVM.getSplitDescription(manga: manga))")
+            Text("\(mangaVM.getSplitDescription(manga))")
                 .font(.caption)
                 .multilineTextAlignment(.leading)
                 .frame(alignment: .leading)
@@ -82,14 +83,22 @@ struct SearchPresentView: View {
     
     var infoStack: some View {
         HStack {
-            StatusView(status: manga.attributes?.status ?? "")
-            DemographicView(demographic: manga.attributes?.publicationDemographic ?? "")
-            RatingView(rating: manga.attributes?.contentRating ?? "")
+            StatusView(status: mangaVM.getStatus(manga))
+            DemographicView(demographic: mangaVM.getDemographic(manga))
+            RatingView(rating: mangaVM.getRating(manga))
             Spacer()
         }
     }
     
     var tagStack: some View {
+        TagStack(tags: tags)
+    }
+}
+
+struct TagStack: View {
+    var tags: [String]
+    
+    var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack {
                 ForEach(tags, id: \.self) { tag in

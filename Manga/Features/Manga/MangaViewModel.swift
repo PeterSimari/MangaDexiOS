@@ -81,7 +81,7 @@ final class MangaViewModel: ObservableObject {
 }
 
 extension MangaViewModel {
-    // This will be used to convert data into something that we can read
+    // This will be used to convert data into something that we can interperet
     
     func listToMangaArray(relationships: [MangaListRelationship]) {
         var mangaIDs: [String] = []
@@ -107,8 +107,22 @@ extension MangaViewModel {
         }
         return ""
     }
+}
+
+extension MangaViewModel {
+    // MARK: Title & Artist Functions
     
-    func getArtistName(manga: Manga) -> String {
+    func getTitle(_ manga: Manga) -> String {
+        return manga.attributes?.title?.en ?? ""
+    }
+    
+    func getShortTitle(_ manga: Manga) -> String {
+        let title: String = manga.attributes?.title?.en ?? ""
+        let titleSplit = title.components(separatedBy: "-")
+        return titleSplit[0]
+    }
+    
+    func getArtistName(_ manga: Manga) -> String {
         for relationship in manga.relationships ?? [] {
             if relationship.type == "artist" {
                 return relationship.attributes?.name ?? ""
@@ -116,23 +130,63 @@ extension MangaViewModel {
         }
         return ""
     }
-}
-
-extension MangaViewModel {
-    // This will be used to turn data into something we want to display to the user
     
-    func getTags(manga: Manga) -> [String] {
+    // MARK: Description Functions
+    
+    func getFullDescription(_ manga: Manga) -> String {
+        return manga.attributes?.description?.en ?? ""
+    }
+    
+    func getDescriptionPreDash(_ manga: Manga) -> String {
+        let description: String = manga.attributes?.description?.en ?? ""
+        let descriptionSplit = description.components(separatedBy: "---")
+        return descriptionSplit[0]
+    }
+    
+    func getDescriptionPreDash(_ manga: Manga) -> [String] {
+        let description: String = manga.attributes?.description?.en ?? ""
+        return description.components(separatedBy: "---")
+    }
+    
+    func getSplitDescription(_ manga: Manga) -> String {
+        let description: String = manga.attributes?.description?.en ?? ""
+        let descriptionSplit = description.components(separatedBy: "\n")
+        return descriptionSplit[0]
+    }
+    
+    func getSplitDescription(_ manga: Manga) -> [String] {
+        let description: String = manga.attributes?.description?.en ?? ""
+        return description.components(separatedBy: "\n")
+    }
+    
+    // MARK: Status, Demographic, Rating Functions
+    
+    func getStatus(_ manga: Manga) -> String {
+        manga.attributes?.status ?? ""
+    }
+    
+    func getDemographic(_ manga: Manga) -> String {
+        manga.attributes?.publicationDemographic ?? ""
+    }
+    
+    func getRating(_ manga: Manga) -> String {
+        manga.attributes?.contentRating ?? ""
+    }
+    
+    // MARK: Original Language Functions
+    
+    func getOriginalLanguage(_ manga: Manga) -> String {
+        manga.attributes?.originalLanguage ?? ""
+    }
+    
+    // MARK: Tag Functions
+    
+    func getTags(_ manga: Manga) -> [String] {
         var tagArray: [String] = []
         for tag in manga.attributes?.tags ?? [] {
             tagArray.append(tag.attributes?.name?.en ?? "")
         }
         return tagArray
-    }
-    
-    func getSplitDescription(manga: Manga) -> String {
-        let description: String = manga.attributes?.description?.en ?? ""
-        let descriptionSplit = description.components(separatedBy: "\n")
-        return descriptionSplit[0]
     }
 }
 
